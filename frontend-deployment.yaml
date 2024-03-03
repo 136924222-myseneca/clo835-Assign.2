@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app.kubernetes.io/name: mynamespace
+    app.kubernetes.io/component: frontend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mynamespace
+      app.kubernetes.io/component: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mynamespace
+        app.kubernetes.io/component: frontend
+    spec:
+      containers:
+      - name: mynamespace
+        image: 508327803984.dkr.ecr.us-east-1.amazonaws.com/assignmentimages:myapp_v1
+        # image: gcr.io/google-samples/gb-frontend:v4
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+         - name: GET_HOSTS_FROM
+           value: dns
+         - name: DBHOST
+           value: mysql-service-name
+         - name: DBPORT
+           value: "3306"
+         - name: DBUSER
+           value: root
+         - name: DATABASE
+           value: employees
+         - name: DBPWD
+           value: pw
+
+        ports:
+        - containerPort: 8080
